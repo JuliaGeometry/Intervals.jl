@@ -6,18 +6,21 @@ export Interval
 
 ################################################################################
 #
-# Types and Constructors
+# Types, Constructors, and Accessors
 #
 ################################################################################
 
 abstract AbstractInterval{T}
 
 immutable Interval{T} <: AbstractInterval{T}
-    lower::T
-    upper::T
+    inf::T
+    sup::T
 end
 
 Interval(i1,i2) = Interval(promote(i1,i2)...)
+
+@inline inf(i::Interval) = i.inf
+@inline sup(i::Interval) = i.sup
 
 ################################################################################
 #
@@ -26,18 +29,18 @@ Interval(i1,i2) = Interval(promote(i1,i2)...)
 ################################################################################
 
 @inline function (+)(i1::Interval, i2::Interval)
-    Interval(i1.lower+i2.lower, i1.upper+i2.upper)
+    Interval(i1.inf+i2.inf, i1.sup+i2.sup)
 end
 
 @inline function (-)(i1::Interval, i2::Interval)
-    Interval(i1.lower-i2.lower, i1.upper-i2.upper)
+    Interval(i1.inf-i2.inf, i1.sup-i2.sup)
 end
 
 @inline function (*)(i1::Interval, i2::Interval)
-    a = i1.lower
-    b = i1.upper
-    c = i2.lower
-    d = i2.upper
+    a = i1.inf
+    b = i1.sup
+    c = i2.inf
+    d = i2.sup
     ac = a*c
     ad = a*d
     bc = b*c
@@ -46,10 +49,10 @@ end
 end
 
 @inline function (/)(i1::Interval, i2::Interval)
-    a = i1.lower
-    b = i1.upper
-    c = i2.lower
-    d = i2.upper
+    a = i1.inf
+    b = i1.sup
+    c = i2.inf
+    d = i2.sup
     ac = a/c
     ad = a/d
     bc = b/c
@@ -64,23 +67,23 @@ end
 ################################################################################
 
 @inline function (==)(i1::Interval, i2::Interval)
-    i1.lower == i2.lower && i1.upper == i2.upper
+    i1.inf == i2.inf && i1.sup == i2.sup
 end
 
 @inline function finishes(i1::Interval, i2::Interval)
-    i1.upper == i2.upper && i1.lower > i2.lower
+    i1.sup == i2.sup && i1.inf > i2.inf
 end
 
 @inline function during(i1::Interval, i2::Interval)
-    i1.lower > i2.lower && i1.upper <= i2.upper
+    i1.inf > i2.inf && i1.sup <= i2.sup
 end
 
 @inline function starts(i1::Interval, i2::Interval)
-    i1.lower == i2.lower && i1.upper < i2.upper
+    i1.inf == i2.inf && i1.sup < i2.sup
 end
 
 @inline function overlaps(i1::Interval, i2::Interval)
-    i1.lower == i2.lower && i1.upper < i2.upper
+    i1.inf == i2.inf && i1.sup < i2.sup
 end
 
 
