@@ -60,6 +60,21 @@ end
     Interval(min(min(min(ac,ad),bc),bd), max(max(max(ac,ad),bc),bd))
 end
 
+for f in (:acos, :asin, :atan, :cos, :cosh, :exp, :log, :log10, :sin, :sinh,
+          :sqrt, :tan, :tanh, :sind, :cosd, :tand, :sinpi, :cospi, :asind,
+          :acosd, :atand, :sec, :csc, :cot, :secd, :cscd, :cotd, :asec, :acsc,
+          :acot, :asecd, :acscd, :acotd, :sech, :csch, :coth, :asinh, :acosh,
+          :atanh, :asech, :acsch, :acoth, :sinc, :cosc, :rad2deg, :log2, :log1p,
+          :exp2, :exp10, :expm1, :abs, :abs2, :sign, :isqrt, :cbrt, :erf, :erfc,
+          :erfcx, :erfi, :dawson, :erfinv, :erfcinv, :real, :imag, :conj, :cis,
+          :factorial, :gamma, :lgamma, :lfact, :digamma, :trigamma, :airyai,
+          :airyprime, :airyaiprime, :airybiprime, :besselj0, :besselj1,
+          :bessely0, :bessely1, :eta, :zeta)
+    @eval begin
+        (Base.$f)(i::Interval) = Interval((Base.$f)(i.inf), ($f)(i.sup))
+    end
+end
+
 ################################################################################
 #
 # Allen's Interval Algebra
