@@ -15,9 +15,19 @@ abstract AbstractInterval{T}
 immutable Interval{T} <: AbstractInterval{T}
     inf::T
     sup::T
+
+    function Interval(i::T, s::T)
+        if i > s
+            temp = i
+            i = s
+            s = temp
+        end
+        new(i, s)
+    end
 end
 
-Interval(i1,i2) = Interval(promote(i1,i2)...)
+Interval{T}(i::T, s::T) = Interval{T}(i,s)
+Interval(i, s) = Interval(promote(i,s)...)
 
 @inline inf(i::Interval) = i.inf
 @inline sup(i::Interval) = i.sup
