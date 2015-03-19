@@ -1,5 +1,5 @@
 using Intervals
 using Base.Test
 
-# write your own tests here
-@test 1 == 1
+@test Interval(1,1) == Interval(1.0, 1.0)
+@test Interval{Float64}(1,1) === Interval{Float64}(1.0, 1.0)

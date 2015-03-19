@@ -16,7 +16,8 @@ immutable Interval{T} <: AbstractInterval{T}
     inf::T
     sup::T
 
-    function Interval(i::T, s::T)
+    # Diagonal dispatch
+    function Interval{T}(i::T, s::T)
         if i > s
             new(s, i)
         else
@@ -25,8 +26,11 @@ immutable Interval{T} <: AbstractInterval{T}
     end
 end
 
-Interval{T}(i::T, s::T) = Interval{T}(i,s)
-Interval(i, s) = Interval(promote(i,s)...)
+# try to promote types
+function Interval(i,s)
+    t = promote(i,s)
+    Interval{typeof(t[1])}(t...)
+end
 
 @inline inf(i::Interval) = i.inf
 @inline sup(i::Interval) = i.sup
