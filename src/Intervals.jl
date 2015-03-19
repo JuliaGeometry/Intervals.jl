@@ -18,11 +18,10 @@ immutable Interval{T} <: AbstractInterval{T}
 
     function Interval(i::T, s::T)
         if i > s
-            temp = i
-            i = s
-            s = temp
+            new(s, i)
+        else
+            new(i, s)
         end
-        new(i, s)
     end
 end
 
