@@ -80,7 +80,7 @@ for f in (:acos, :asin, :atan, :cos, :cosh, :exp, :log, :log10, :sin, :sinh,
           :airyprime, :airyaiprime, :airybiprime, :besselj0, :besselj1,
           :bessely0, :bessely1, :eta, :zeta)
     @eval begin
-        (Base.$f)(i::Interval) = Interval((Base.$f)(i.inf), ($f)(i.sup))
+        (Base.$f)(i::Interval) = Interval((Base.$f)(i.inf), (Base.$f)(i.sup))
     end
 end
 
