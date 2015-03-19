@@ -4,6 +4,8 @@ using Compat
 
 export Interval
 
+export inf, sup
+
 ################################################################################
 #
 # Types, Constructors, and Accessors
@@ -58,7 +60,7 @@ end
     ad = a*d
     bc = b*c
     bd = b*d
-    Interval(min(min(min(ac,ad),bc),bd), max(max(max(ac,ad),bc),bd))
+    Interval(min(ac,ad,bc,bd), max(ac,ad,bc,bd))
 end
 
 @inline function (/)(i1::Interval, i2::Interval)
@@ -70,7 +72,7 @@ end
     ad = a/d
     bc = b/c
     bd = b/d
-    Interval(min(min(min(ac,ad),bc),bd), max(max(max(ac,ad),bc),bd))
+    Interval(min(ac,ad,bc,bd), max(ac,ad,bc,bd))
 end
 
 for f in (:acos, :asin, :atan, :cos, :cosh, :exp, :log, :log10, :sin, :sinh,
