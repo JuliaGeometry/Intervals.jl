@@ -1,7 +1,5 @@
 module Intervals
 
-using Compat
-
 export Interval
 
 export inf, sup
@@ -100,20 +98,59 @@ end
     i1.inf == i2.inf && i1.sup == i2.sup
 end
 
+@doc """
+i1: _____
+
+i2:           _____
+""" ->
+@inline function before(i1::Interval, i2::Interval)
+    i1.sup < i2.inf # this is guaranteed because of the inner constructor
+end
+
+@doc """
+i1: _____
+
+i2:      _____
+""" ->
+@inline function meets(i1::Interval, i2::Interval)
+    i1.sup == i2.inf && i1.inf < i2.inf
+end
+
+@doc """
+i1:       _____
+
+i2: ___________
+""" ->
 @inline function finishes(i1::Interval, i2::Interval)
     i1.sup == i2.sup && i1.inf > i2.inf
 end
 
+@doc """
+i1:      _______
+
+i2: ___________________
+""" ->
 @inline function during(i1::Interval, i2::Interval)
-    i1.inf > i2.inf && i1.sup <= i2.sup
+    i1.inf > i2.inf && i1.sup < i2.sup
 end
 
+
+@doc """
+i1: ________
+
+i2: _________________
+"""->
 @inline function starts(i1::Interval, i2::Interval)
     i1.inf == i2.inf && i1.sup < i2.sup
 end
 
+@doc """
+i1: ________
+
+i2:    ____________
+""" ->
 @inline function overlaps(i1::Interval, i2::Interval)
-    i1.inf == i2.inf && i1.sup < i2.sup
+    i1.sup > i2.inf && i1.inf < i2.inf
 end
 
 
